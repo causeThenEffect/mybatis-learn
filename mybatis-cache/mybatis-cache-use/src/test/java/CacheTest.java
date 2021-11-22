@@ -40,7 +40,7 @@ public class CacheTest {
       log.info("cost time: {}",stopWatch.elapsedTime());
       Assertions.assertEquals(allUsers.size(), 5);
 
-      sqlSession.commit();
+//      sqlSession.commit();
 
       /**
        * 使用一级缓存
