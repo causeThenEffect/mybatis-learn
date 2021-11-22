@@ -37,13 +37,16 @@ public class CacheDirtyTest {
    */
   @Test
   void test() {
+    /**
+     * 一级缓存的作用范围session
+     */
     try (SqlSession session = sqlSessionFactory.openSession()) {
       User user = new User();
       user.setId(6);
       user.setName("test6");
       int i = session.insert("addUser", user);
 
-      assertEquals(i, 1);
+      assertEquals(1, i);
 
       /**
        * 本次是从数据库直接读取的，读取之后会存到一级缓存
@@ -54,7 +57,7 @@ public class CacheDirtyTest {
        * 这里数据库的事务隔离级别是读未提交，所以可以读取到六条数据
        */
       List<Object> allUsers = session.selectList("getAllUsers");
-      assertEquals(allUsers.size(), 6);
+      assertEquals(6, allUsers.size());
 
 //      session.commit();
 
@@ -63,17 +66,20 @@ public class CacheDirtyTest {
        * 因为session还没有提交，数据随时有可能回滚
        */
       List<Object> allUsers2 = session.selectList("getAllUsers");
-      assertEquals(allUsers2.size(), 6);
+      assertEquals(6, allUsers2.size());
 
       session.rollback();
     }
 
     /**
+     *
+     * 二级缓存的作用范围：应用程序启动后的一个namespace
+     *
      * 数据回滚之后，依然只读到五条，说明刚才读取的是脏数据
      */
     try (SqlSession session = sqlSessionFactory.openSession()) {
      List<Object> allUsers = session.selectList("getAllUsers");
-      assertEquals(allUsers.size(), 5);
+      assertEquals(5, allUsers.size());
     }
 
   }
