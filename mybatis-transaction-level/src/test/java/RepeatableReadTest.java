@@ -34,18 +34,22 @@ public class RepeatableReadTest {
 
   /**
    * 事务的隔离级别是相对于当前线程来说的，看你想要保证当前线程隔离级别有多高
+   *
+   * mysql底层通过视图的方式实现了可以重复读取
+   *
    * @throws InterruptedException
    */
   @Test
   void test() throws InterruptedException {
-
-    startThread(1000);
 
 //    try (SqlSession session = sqlSessionFactory.openSession(TransactionIsolationLevel.READ_COMMITTED)) {
     try (SqlSession session = sqlSessionFactory.openSession(TransactionIsolationLevel.REPEATABLE_READ)) {
       // 开启事务
       List<User> list = session.selectList("getAllUsers");
       assertEquals(5, list.size());
+
+      // 等待子线程插入数据
+      startThread();
 
       // 等待子线程插入数据
       Thread.sleep(1000);
@@ -57,7 +61,7 @@ public class RepeatableReadTest {
 
       /**
        *
-       * 幻读的意思是对于当前线程来说我看到的是5条数据，为什么我插入的时候会告诉我主键重复呢？
+       * 可重复读的问题解决了，但是又出现了幻读问题
        *
        * sqlSessionFactory.openSession(TransactionIsolationLevel.REPEATABLE_READ)
        * 出现幻读问题
@@ -79,14 +83,10 @@ public class RepeatableReadTest {
 
   }
 
-  public Thread startThread(long sleepTime) {
+  public Thread startThread() {
     Thread thread1 = new Thread(() -> {
       try (SqlSession session2 = sqlSessionFactory.openSession()) {
-        // 等待主线程事务开启
-        Thread.sleep(sleepTime);
         insertUser(session2, "user6");
-      } catch (InterruptedException e) {
-        e.printStackTrace();
       }
     });
     thread1.start();

@@ -32,30 +32,30 @@ public class ReadCommittedTest {
     BaseDataTest.runScript(sqlSessionFactory.getConfiguration().getEnvironment().getDataSource(), "./CreateDB.sql");
   }
 
-  /**
-   * 事务的隔离级别是相对于当前线程来说的，看你想要保证当前线程隔离级别有多高
-   * @throws InterruptedException
-   */
   @Test
   void test() throws InterruptedException {
-
-    startThread();
-
-    // 等待子线程执行，开启子线程就相当于开启了一个事务
-    Thread.sleep(10000);
-
     try (SqlSession session = sqlSessionFactory.openSession(TransactionIsolationLevel.READ_COMMITTED)) {
 //    try (SqlSession session = sqlSessionFactory.openSession(TransactionIsolationLevel.READ_UNCOMMITTED)) {
       // 开启事务
       List<User> list = session.selectList("getAllUsers");
       assertEquals(5, list.size());
 
-      // 等待子线程提交数据
-      Thread.sleep(10000);
+      // 开启子线程就相当于开启了一个事务
+      Thread thread1 = startThread();
 
-      // 再次读取依然是刚才的数据，说明数据可以重复读取
+      // 等待子线程修改数据，但是并没有提交
+      Thread.sleep(1000);
+
+      // 看本次是否读到脏数据
       List<User> list2 = session.selectList("getAllUsers");
-      assertEquals(6, list2.size());
+      assertEquals(5, list2.size());
+
+      // 等待子线程执行结束
+      thread1.join();
+
+      // 暴露了不能重复读取问题
+      List<User> list3 = session.selectList("getAllUsers");
+      assertEquals(6, list3.size());
     }
 
   }
@@ -63,7 +63,8 @@ public class ReadCommittedTest {
   public Thread startThread() {
     Thread thread1 = new Thread(() -> {
       try (SqlSession session2 = sqlSessionFactory.openSession()) {
-        insertUser(session2, "user6", 10000);
+        // 两秒之后再提交数据
+        insertUser(session2, "user6", 2000);
       }
     });
     thread1.start();
