@@ -2,17 +2,21 @@ package com.cause.transaction.propagation.service;
 
 import com.cause.transaction.propagation.mapper.UserMapper;
 import com.cause.transaction.propagation.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
+
 /**
  * @author cause
  * @date 2021/11/24
  */
 @Service
+@Slf4j
 public class UserService {
 
   /**
@@ -50,6 +54,19 @@ public class UserService {
   public void addUser2() {
     addUser(7, "user7");
     addUser(7, "user7");
+  }
+
+  /**
+   * 事务抛出的异常被捕获了，所以事务失效了
+   */
+  @Transactional(rollbackFor = Exception.class)
+  public void addUser3() {
+    addUser(6, "user6");
+    try {
+      addUser(6, "user6");
+    } catch (Exception e) {
+      log.info(e.getMessage());
+    }
   }
 
 }

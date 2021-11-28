@@ -11,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 2021/11/28
  */
 @Slf4j
-public class UserServiceTest extends BaseTest {
+class UserServiceTest extends BaseTest {
 
   @Autowired
   UserService userService;
 
   @Test
-  public void addUserTest() {
+  void addUserTest() {
     try {
       userService.addUser();
     } catch (Exception e) {
@@ -25,6 +25,16 @@ public class UserServiceTest extends BaseTest {
     }
 
     Assertions.assertEquals(7, userService.getAllUsers().size());
-
   }
+
+  @Test
+  void addUser3Test() {
+    try {
+      userService.addUser3();
+    } catch (Exception e) {
+      log.info(e.getMessage());
+    }
+    Assertions.assertEquals(6, userService.getAllUsers().size());
+  }
+
 }
