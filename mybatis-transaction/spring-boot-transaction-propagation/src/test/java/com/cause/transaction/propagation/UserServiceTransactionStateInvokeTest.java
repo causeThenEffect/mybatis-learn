@@ -75,13 +75,9 @@ public class UserServiceTransactionStateInvokeTest extends BaseTest {
       log.info(e.getMessage());
     }
 
-    Assertions.assertEquals(6, userService.getAllUsers().size());
+    Assertions.assertEquals(7, userService.getAllUsers().size());
   }
 
-  /**
-   * 调用者不应该以事务方式运行，否则报以下错误：
-   * Existing transaction found for transaction marked with propagation 'never'
-   */
   @Test
   void testNeverTransactional() {
     try {
@@ -90,7 +86,7 @@ public class UserServiceTransactionStateInvokeTest extends BaseTest {
       log.info(e.getMessage());
     }
 
-    Assertions.assertEquals(5, userService.getAllUsers().size());
+    Assertions.assertEquals(6, userService.getAllUsers().size());
   }
 
   @Test

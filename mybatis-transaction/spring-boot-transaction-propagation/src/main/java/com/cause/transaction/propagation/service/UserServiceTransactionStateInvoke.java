@@ -54,12 +54,11 @@ public class UserServiceTransactionStateInvoke {
 
   @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
   public void notSupportTransactional() {
-    userServiceTransactionStateInvoked.notSupportTransactional();
-
     userService.addUser(6, "user6");
+    userServiceTransactionStateInvoked.notSupportTransactional();
   }
 
-  @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+//  @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
   public void neverTransactional() {
     userService.addUser(6, "user6");
 
