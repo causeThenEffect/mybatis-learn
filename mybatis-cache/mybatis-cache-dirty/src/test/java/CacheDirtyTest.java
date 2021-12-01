@@ -63,15 +63,21 @@ public class CacheDirtyTest {
 
       /**
        * 这次是直接从一级缓存读取的数据，属于脏数据
-       * 因为session还没有提交，数据随时有可能回滚
        */
       List<Object> allUsers2 = session.selectList("getAllUsers");
       assertEquals(6, allUsers2.size());
 
       session.rollback();
+
+      // session回滚之后，一级缓存就被清除了，这次获取数据是直接从数据库读取
+      List<Object> allUsers3 = session.selectList("getAllUsers");
+      assertEquals(5, allUsers3.size());
     }
 
     /**
+     * 本次读取的是二级缓存
+     *
+     * 二级缓存没有读到脏数据，二级缓存只有在分布式环境中才会读到脏数据
      *
      * 二级缓存的作用范围：应用程序启动后的一个namespace
      *
