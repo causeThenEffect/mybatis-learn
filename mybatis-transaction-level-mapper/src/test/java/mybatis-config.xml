@@ -23,14 +23,13 @@
 <configuration>
 
     <settings>
-        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <setting name="logImpl" value="STDOUT_LOGGING" />
         <setting name="cacheEnabled" value="false"/>
         <setting name="localCacheScope" value="STATEMENT"/>
     </settings>
 
     <environments default="development">
         <environment id="development">
-            <!--            todo mybatis 事务管理机制-->
             <transactionManager type="JDBC">
                 <property name="" value=""/>
             </transactionManager>

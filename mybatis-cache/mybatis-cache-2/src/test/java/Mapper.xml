@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Mapper">
+    <!--    二级缓存默认是不开启的，一级缓存默认是开启的-->
+    <!--    size 控制hashmap大小，默认是1024-->
+    <!--   flushInterval控制二级缓存过期时间，默认一小时 -->
+    <cache/>
+<!--    <cache size="512" readOnly="false" blocking="false" eviction="FIFO" flushInterval="6000"/>-->
+
+    <!--    flushCache参数的作用是同时关闭一级缓存和二级缓存-->
+    <!--    对二级缓存的细粒度控制，当前select语句是否使用二级缓存，useCache默认为true-->
+    <select id="getAllUsers" resultMap="results" flushCache="false" useCache="true">
+        select *
+        from users
+    </select>
+
+    <resultMap type="User" id="results">
+        <id column="id" property="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <insert id="addUser">
+        insert into users(id, name)
+        values (#{id}, #{name})
+    </insert>
+
+</mapper>

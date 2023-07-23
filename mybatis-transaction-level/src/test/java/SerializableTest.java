@@ -1,4 +1,3 @@
-import com.mysql.cj.Session;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -34,9 +33,13 @@ public class SerializableTest {
   }
 
   /**
-   * 事务的隔离级别是相对于当前线程来说的，看你想要保证当前线程隔离级别有多高
    *
    * mysql通过锁机制现实串行化
+   *
+   * 一个session拥有一个executor
+   * 一个executor拥有一个transaction
+   * 一个transaction拥有一个connection
+   * 拥有了connection就拥有一个物理事务
    *
    * @throws InterruptedException
    */

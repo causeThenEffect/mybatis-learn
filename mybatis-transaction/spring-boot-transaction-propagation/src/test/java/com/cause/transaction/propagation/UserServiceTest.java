@@ -35,6 +35,7 @@ class UserServiceTest extends BaseTest {
       log.info(e.getMessage());
     }
     Assertions.assertEquals(6, userService.getAllUsers().size());
+    Assertions.assertEquals(6, userService.getAllUsers().size());
   }
 
 }
