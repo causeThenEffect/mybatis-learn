@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mybatis-plugin-springboot-starter</artifactId>
+    <artifactId>mybatis-plugin-springboot</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -34,20 +34,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.5.13</version>
-        </dependency>-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.causetheneffect</groupId>
-            <artifactId>mybatis-pal-spring-boot-starter</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
