@@ -4,6 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
+        <module>mybatis-cache-origin</module>
         <module>mybatis-cache</module>
         <module>mybatis-cache/mybatis-cache-use</module>
         <module>mybatis-cache/mybatis-cache-dirty</module>
@@ -16,6 +17,9 @@
         <module>mybatis-cache/mybatis-cache-blocking</module>
         <module>mybatis-plugin-springboot-starter</module>
         <module>mybatis-plugin-springboot</module>
+        <module>mybatis-page</module>
+        <module>mybatis-page/page-mybatis-plus</module>
+        <module>mybatis-page/page-origin</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
