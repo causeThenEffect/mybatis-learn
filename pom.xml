@@ -14,6 +14,7 @@
         <module>mybatis-transaction-spring-boot</module>
         <module>jdbc-test</module>
         <module>mybatis-transaction</module>
+        <module>mybatis-transaction/spring-boot-transaction-propagation</module>
         <module>mybatis-cache/mybatis-cache-blocking</module>
         <module>mybatis-plugin-springboot-starter</module>
         <module>mybatis-plugin-springboot</module>

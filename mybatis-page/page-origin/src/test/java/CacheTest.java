@@ -33,7 +33,7 @@ public class CacheTest {
   }
 
   /**
-   * RowBounds 是通过内存分页实现的，查询出所有记录之后再分野
+   * RowBounds 是通过内存分页实现的，查询出所有记录之后再分页
    */
   @Test
   void test() {

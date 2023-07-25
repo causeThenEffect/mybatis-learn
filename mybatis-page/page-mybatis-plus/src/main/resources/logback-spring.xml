@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>logback</contextName>
+    <property name="log.path" value="./logs"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%red(%date{yyyy-MM-dd HH:mm:ss}) %highlight(%-5level) %red([%thread]) %boldMagenta(%logger{50}) %file %green(%line) %cyan(%msg%n)"/>
+    <!--输出到控制台-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+             <level>ERROR</level>
+         </filter>-->
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!--输出到文件-->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--&lt;!&ndash; 过滤器，只记录WARN级别的日志 &ndash;&gt;
+        &lt;!&ndash; 果日志级别等于配置级别，过滤器会根据onMath 和 onMismatch接收或拒绝日志。 &ndash;&gt;
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            &lt;!&ndash; 设置过滤级别 &ndash;&gt;
+            <level>DEBUG</level>
+            &lt;!&ndash; 用于配置符合过滤条件的操作 &ndash;&gt;
+            <onMatch>ACCEPT</onMatch>
+            &lt;!&ndash; 用于配置不符合过滤条件的操作 &ndash;&gt;
+            <onMismatch>DENY</onMismatch>
+        </filter>-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/logback.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--            保留一天的日志-->
+            <maxHistory>1</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{100} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--    root节点实际上是配置启用哪种appender，可以添加多个appender-->
+    <root level="debug">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+    </root>
+
+    <!-- logger节点可以指定具体包或类的日志配置 -->
+    <!-- name属性为必选，指定要配置的包或类，level和additivity为可选，有缺省值 -->
+    <!-- level表示日志级别，这里配置info级别，表示info及以上级别的日志被输出 -->
+    <!-- additivity表示日志是否传递到上一级，默认为true -->
+    <logger name="com.cause.page.mapper" level="info" additivity="false">
+        <appender-ref ref="console"/>
+    </logger>
+
+    <logger name="org.mybatis.spring" level="info" additivity="false">
+        <appender-ref ref="console"/>
+    </logger>
+
+</configuration>
